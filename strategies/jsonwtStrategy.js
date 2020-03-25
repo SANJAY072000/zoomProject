@@ -8,7 +8,7 @@ const config=require('../setup/config');
 
 
 // fetching the schema
-const Hospital=require('../models/Hospital');
+const User=require('../models/User');
 
 
 // configuring the strategy
@@ -20,13 +20,19 @@ opts.secretOrKey = config.secret;
 // exporting the strategy
 module.exports=passport=>{
 passport.use(new JwtStrategy(opts,(jwt_payload, done)=>{
-    Hospital.findById(jwt_payload.id)
-            .then((err,hospital)=>{
-                if (hospital)
-                    return done(null, hospital);
+    User.findById(jwt_payload.id)
+            .then((err,user)=>{
+                if (user)
+                    return done(null, user);
                 else
                     return done(null, false);
     })
     .catch(err=>console.log(err));
 }));
 };
+
+
+
+
+
+

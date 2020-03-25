@@ -23,7 +23,7 @@ mongoose.connect(dbstr,{useNewUrlParser:true,useUnifiedTopology:true})
 
 
 // fetching the routes
-// const auth=require('./routes/api/auth');
+const auth=require('./routes/api/auth');
 
 
 // configuring middleware for bodyparser
@@ -36,11 +36,11 @@ app.use(passport.initialize());
 
 
 // fetching the strategy
-// require('./strategies/jsonwtStrategy')(passport);
+require('./strategies/jsonwtStrategy')(passport);
 
 
 // calling the routes
-// app.use('/api/auth',auth);
+app.use('/api/auth',auth);
 
 
 // listening the server
