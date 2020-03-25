@@ -21,7 +21,7 @@ opts.secretOrKey = config.secret;
 module.exports=passport=>{
 passport.use(new JwtStrategy(opts,(jwt_payload, done)=>{
     User.findById(jwt_payload.id)
-            .then((err,user)=>{
+            .then(user=>{
                 if (user)
                     return done(null, user);
                 else
@@ -30,7 +30,6 @@ passport.use(new JwtStrategy(opts,(jwt_payload, done)=>{
     .catch(err=>console.log(err));
 }));
 };
-
 
 
 
