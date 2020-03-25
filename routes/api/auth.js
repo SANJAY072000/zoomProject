@@ -56,25 +56,24 @@ User.findOne({userEmail})
     if(!user)
     return res.status(200).json({"userNotRegistered":'Your are not registered'});
     bcrypt.compare(userPassword,user.userPassword)
-        .then(isCorrect=>{
-            if(isCorrect){
-            const payload={
-                id:user._id,
-                userName:user.userName,
-                userEmail:user.userEmail,
-                userZoomId:user.userZoomId,
-                userPassword:user.userPassword
-            };
-            jsonwt.sign(payload,config.secret,
-            {expiresIn:3600},(err,token)=>{
-            if(err)throw err;
-            res.status(200).json({success:true,token:`Bearer ${token}`});
-            });
-            }
-            else
-            return res.status(200).
-            json({"passwordIncorrect":'Your password is incorrect'});})
-            .catch(err=>console.log(err));
+    .then(isCorrect=>{
+    if(isCorrect){
+    const payload={
+        id:user._id,
+        userName:user.userName,
+        userEmail:user.userEmail,
+        userZoomId:user.userZoomId,
+        userPassword:user.userPassword
+    };
+    jsonwt.sign(payload,config.secret,{expiresIn:3600},(err,token)=>{
+    if(err)throw err;
+    res.status(200).json({success:true,token:`Bearer ${token}`});
+    });
+    }
+    else
+    return res.status(200).
+    json({"passwordIncorrect":'Your password is incorrect'});})
+    .catch(err=>console.log(err));
     })
     .catch(err=>console.log(err));
 });
