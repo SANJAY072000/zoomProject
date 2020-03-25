@@ -2,7 +2,9 @@
 const express=require('express'),
 passport=require('passport'),
 mongoose=require('mongoose'),
-bodyparser=require('body-parser');
+bodyparser=require('body-parser'),
+path=require("path"),
+cors=require("cors");
 
 
 // starting the server
@@ -41,6 +43,15 @@ require('./strategies/jsonwtStrategy')(passport);
 
 // calling the routes
 app.use('/api/auth',auth);
+
+
+// deployment related stuff
+if(process.env.NODE_ENV==="production"){
+        app.use(express.static('client/build'));
+        app.get('*',(req,res)=>{
+        res.sendFile(path.resolve(__dirname,'client','build','index.html'));
+        });
+    }
 
 
 // listening the server

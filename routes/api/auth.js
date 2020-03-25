@@ -10,24 +10,25 @@ const User=require('../../models/User');
 
 
 // fetching the setup file
-const config=require('../../setup/config');
+const key=require('../../setup/config');
 
 
 /*
 @type - POST
-@route - /api/auth/register/admin
-@desc - a route to register admin
+@route - /api/auth/register/user
+@desc - a route to register user
 @access - PUBLIC
 */
-router.post('/register/admin',(req,res)=>{
-User.findOne({userEmail:req.body.adminEmail})
+router.post('/register/user',(req,res)=>{
+User.findOne({userEmail:req.body.userEmail})
         .then(user=>{
             if(user)
-            return res.status(200).json({userAlreadyRegistered:'Your are already registered'});
+            return res.status(200).json({"userAlreadyRegistered":'Your are already registered'});
             const newUser= new User({
-                userName:req.body.adminName,
-                userEmail:req.body.adminEmail,
-                userPassword:req.body.adminPassword
+                userName:req.body.userName,
+                userEmail:req.body.userEmail,
+                userZoomId:req.body.userZoomId,
+                userPassword:req.body.userPassword
             });
             bcrypt.genSalt(10,(err, salt)=>{
                 bcrypt.hash(newUser.userPassword, salt, (err, hash)=>{
@@ -53,8 +54,7 @@ router.post('/login/user',(req,res)=>{
 const userEmail=req.body.userEmail,userPassword=req.body.userPassword;
 User.findOne({userEmail})
     .then(user=>{
-    if(!user)
-    return res.status(200).json({"userNotRegistered":'Your are not registered'});
+    if(!user)return res.status(200).json({"notRegistered":'Your are not registered'});
     bcrypt.compare(userPassword,user.userPassword)
     .then(isCorrect=>{
     if(isCorrect){
@@ -62,17 +62,14 @@ User.findOne({userEmail})
         id:user._id,
         userName:user.userName,
         userEmail:user.userEmail,
-        userZoomId:user.userZoomId,
-        userPassword:user.userPassword
+        userZoomId:user.userZoomId
     };
-    jsonwt.sign(payload,config.secret,{expiresIn:3600},(err,token)=>{
+    jsonwt.sign(payload,key.secret,{expiresIn:3600},(err,token)=>{
     if(err)throw err;
-    res.status(200).json({success:true,token:`Bearer ${token}`});
+    return res.status(200).json({success:true,token:`Bearer ${token}`});
     });
     }
-    else
-    return res.status(200).
-    json({"passwordIncorrect":'Your password is incorrect'});})
+    else return res.status(200).json({"passwordIncorrect":'Your password is incorrect'});})
     .catch(err=>console.log(err));
     })
     .catch(err=>console.log(err));
@@ -81,12 +78,11 @@ User.findOne({userEmail})
 
 /*
 @type - GET
-@route - /api/auth/test
+@route - /api/auth/login/test
 @desc - a route to test user login
 @access - PRIVATE
 */
-router.get('/test',passport.authenticate('jwt',{session:false}),
-(req,res)=>{
+router.get('/login/test',passport.authenticate('jwt',{session:false}),(req,res)=>{
 User.findOne({_id:req.user._id})
 .then(user=>res.status(200).json(user))
 .catch(err=>console.log(err));
