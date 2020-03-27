@@ -4,22 +4,22 @@ Schema=mongoose.Schema;
 
 
 // creating the schema
-const userSchema=new Schema({
-    userName:{
+const custSchema=new Schema({
+    user:{
+        type:Schema.Types.ObjectId,
+        ref:'user'
+    },
+    custName:{
         type:String,
         required:true
     },
-    userEmail:{
+    custEmail:{
         type:String,
         required:true
     },
-    userPassword:{
+    custPassword:{
         type:String,
         required:true
-    },
-    userZoomId:{
-        type:String,
-        default:"None"
     },
     date:{
         type:Date,
@@ -29,7 +29,7 @@ const userSchema=new Schema({
 
 
 // exporting the schema
-module.exports=mongoose.model('user',userSchema);
+module.exports=mongoose.model('cust',custSchema);
 
 
 
