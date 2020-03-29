@@ -42,42 +42,6 @@ router.post('/createUser',passport.authenticate('jwt',{session:false}),
         });
         })
         .catch(err=>console.log(err));
-    // User.findOne({userEmail})
-    //     .then(user=>{
-    //         var options = {
-    //             "method": "POST",
-    //             "hostname": "api.zoom.us",
-    //             "port": null,
-    //             "path": "/v2/users",
-    //             "headers": {
-    //               "content-type": "application/json",
-    //               "authorization": `Bearer ${key.jwtToken}`
-    //             }
-    //           };
-              
-    //           var req = http.request(options, function (res) {
-    //             var chunks = [];
-              
-    //             res.on("data", function (chunk) {
-    //               chunks.push(chunk);
-    //             });
-              
-    //             res.on("end", function () {
-    //               var body = Buffer.concat(chunks);
-    //               console.log(body.toString());
-    //             });
-    //           });
-              
-    //           req.write(JSON.stringify(
-    //             { action: 'create',
-    //             user_info: 
-    //              { email: 'sanjaysinghbisht114@gmail.com',
-    //                type: 1,
-    //                first_name: 'abc',
-    //                last_name: 'abc'} }));
-    //           req.end()
-    //     })
-    //     .catch(err=>console.log(err));
     });
 
 
